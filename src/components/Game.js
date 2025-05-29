@@ -171,7 +171,7 @@ export default class Game {
   }
 
   showTutorial() {
-    if (this.startScreen.getloadingProgress() && !this.gameStarted) {
+    if (this.startScreen.progressBar.getloadingProgress() && !this.gameStarted) {
       this.tutorial.show();
     } else {
       this.tutorial.hide();
@@ -179,20 +179,19 @@ export default class Game {
   }
 
   loadProgressBarOnStartScr() {
-    if (!this.startScreen.getloadingProgress()) {
-      this.startScreen.loadProgress += config.loadProgressSpeed;
-      if (this.startScreen.checkLoadProgressEnd()) {
-        this.startScreen.progressAfterDone();
+    const progressBar = this.startScreen.progressBar;
+
+    if (!progressBar.getloadingProgress()) {
+      progressBar.increaseProgress(config.loadProgressSpeed);
+      if (progressBar.isComplete()) {
+        progressBar.progressAfterDone();
+        this.startScreen.hide();
 
         this.app.stage.interactive = true;
         this.app.stage.on("pointerdown", this.onPointerDown.bind(this));
 
         this.spawnAnimalAfterLoading();
       }
-
-      this.startScreen.updateWidthProgressBar();
-
-      return;
     }
   }
 

@@ -1,13 +1,11 @@
 import { loadingTextConfig, rulesTextStyleConfig } from "./styles/Styles.js";
 import config from "./config/config.js";
 import textConfig from "./config/textConfig.js";
+import ProgressBar from "./ProgressBar.js";
 
 export default class StartScreen {
   constructor(app) {
     this.app = app;
-    this.loadProgress = 0;
-    this.loadProgressEnd = 100;
-    this.loadingDone = false;
 
     this.createChildren();
   }
@@ -92,71 +90,19 @@ export default class StartScreen {
     this.loadingText.y = this.app.screen.height / 2 - 40;
     this.startScreen.addChild(this.loadingText);
 
-    this.progressBarBorder = new PIXI.Graphics();
-    this.progressBarBorder.lineStyle(4, config.progressBarBorderColor);
-    this.progressBarBorder.drawRect(0, 0, 400, 30);
-    this.progressBarBorder.x = (this.app.screen.width - 400) / 2;
-    this.progressBarBorder.y = this.app.screen.height / 2;
-    this.startScreen.addChild(this.progressBarBorder);
-
-    this.progressBarFill = new PIXI.Graphics();
-    this.progressBarFill.beginFill(config.progressBarFillColor);
-    this.progressBarFill.drawRect(0, 0, 0, 30);
-    this.progressBarFill.endFill();
-    this.progressBarFill.x = this.progressBarBorder.x;
-    this.progressBarFill.y = this.progressBarBorder.y;
-    this.startScreen.addChild(this.progressBarFill);
-  }
-
-  updateWidthProgressBar() {
-    this.progressBarFill.clear();
-    this.progressBarFill.beginFill(config.progressBarFillColor);
-    this.progressBarFill.drawRect(0, 0, 4 * this.loadProgress, 30);
-    this.progressBarFill.endFill();
+    this.progressBar = new ProgressBar(this.app);
+    this.startScreen.addChild(this.progressBar.getView());
   }
 
   hide() {
     this.startScreen.visible = false;
   }
 
-  loadingProgressDone() {
-    this.loadingDone = true;
-  }
-
-  loadingProgressNotDone() {
-    this.loadingDone = false;
-  }
-
-  getloadingProgress() {
-    return this.loadingDone;
-  }
-
-  progressAfterDone() {
-    this.loadProgress = this.loadProgressEnd;
-    this.loadingProgressDone();
-    this.hide();
-  }
-
-  checkLoadProgressEnd(){
-    return this.loadProgress > this.loadProgressEnd
-  }
-
-  updateProgress(){
-    this.progressBarBorder.clear();
-    this.progressBarBorder.lineStyle(4, config.progressBarBorderColor);
-    this.progressBarBorder.drawRect(0, 0, 400, 30);
-    this.progressBarBorder.x = (this.app.screen.width - 400) / 2;
-    this.progressBarBorder.y = this.app.screen.height / 2 - 100;
-  }
-
   resize() {
     this.startBgCont.width = this.app.screen.width;
     this.startBgCont.height = this.app.screen.height;
 
-    this.updateProgress();
-
-    this.progressBarFill.x = this.progressBarBorder.x;
-    this.progressBarFill.y = this.progressBarBorder.y;
+    this.progressBar.resize()
 
     this.loadingText.x = this.app.screen.width / 2;
     this.loadingText.y = this.app.screen.height / 2 - 140;
