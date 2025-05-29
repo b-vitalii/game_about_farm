@@ -181,10 +181,8 @@ export default class Game {
   loadProgressBarOnStartScr() {
     if (!this.startScreen.getloadingProgress()) {
       this.startScreen.loadProgress += config.loadProgressSpeed;
-      if (this.startScreen.loadProgress > this.startScreen.loadProgressEnd) {
-        this.startScreen.loadProgress = this.startScreen.loadProgressEnd;
-        this.startScreen.loadingProgressDone();
-        this.startScreen.hide();
+      if (this.startScreen.checkLoadProgressEnd()) {
+        this.startScreen.progressAfterDone();
 
         this.app.stage.interactive = true;
         this.app.stage.on("pointerdown", this.onPointerDown.bind(this));

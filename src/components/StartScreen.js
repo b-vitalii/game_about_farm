@@ -131,6 +131,16 @@ export default class StartScreen {
     return this.loadingDone;
   }
 
+  progressAfterDone() {
+    this.loadProgress = this.loadProgressEnd;
+    this.loadingProgressDone();
+    this.hide();
+  }
+
+  checkLoadProgressEnd(){
+    return this.loadProgress > this.loadProgressEnd
+  }
+
   updateProgress(){
     this.progressBarBorder.clear();
     this.progressBarBorder.lineStyle(4, config.progressBarBorderColor);
