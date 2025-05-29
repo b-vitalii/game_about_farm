@@ -18,11 +18,14 @@ export default class StartScreen {
     this.startScreen = new PIXI.Container();
     this.app.stage.addChild(this.startScreen);
 
-    this.startBg = new PIXI.Graphics();
-    this.startBg.beginFill(config.startBgColor);
-    this.startBg.drawRect(0, 0, this.app.screen.width, this.app.screen.height);
-    this.startBg.endFill();
-    this.startScreen.addChild(this.startBg);
+    this.startBgCont = new PIXI.Container();
+    this.startScreen.addChild(this.startBgCont);
+
+    const startBg = new PIXI.Graphics();
+    startBg.beginFill(config.startBgColor);
+    startBg.drawRect(0, 0, 100, 200);
+    startBg.endFill();
+    this.startBgCont.addChild(startBg);
 
     this.rulesCont = new PIXI.Container();
     this.startScreen.addChild(this.rulesCont);
@@ -128,17 +131,19 @@ export default class StartScreen {
     return this.loadingDone;
   }
 
-  resize() {
-    this.startBg.clear();
-    this.startBg.beginFill(config.startBgColor);
-    this.startBg.drawRect(0, 0, this.app.screen.width, this.app.screen.height);
-    this.startBg.endFill();
-
+  updateProgress(){
     this.progressBarBorder.clear();
     this.progressBarBorder.lineStyle(4, config.progressBarBorderColor);
     this.progressBarBorder.drawRect(0, 0, 400, 30);
     this.progressBarBorder.x = (this.app.screen.width - 400) / 2;
     this.progressBarBorder.y = this.app.screen.height / 2 - 100;
+  }
+
+  resize() {
+    this.startBgCont.width = this.app.screen.width;
+    this.startBgCont.height = this.app.screen.height;
+
+    this.updateProgress();
 
     this.progressBarFill.x = this.progressBarBorder.x;
     this.progressBarFill.y = this.progressBarBorder.y;

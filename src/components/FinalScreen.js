@@ -10,6 +10,9 @@ export default class FinalScreen {
   }
 
   createChildren() {
+    this.winOverlayCont = new PIXI.Container();
+    this.app.stage.addChild(this.winOverlayCont);
+
     this.winOverlay = new PIXI.Graphics();
     this.winOverlay.beginFill(config.winOverlayColor, 0.7);
     this.winOverlay.drawRect(0, 0, this.app.screen.width, this.app.screen.height);
@@ -34,7 +37,7 @@ export default class FinalScreen {
     this.restartBtn.buttonMode = true;
     this.restartBtn.visible = false;
 
-    this.app.stage.addChild(this.winOverlay);
+    this.winOverlayCont.addChild(this.winOverlay);
     this.app.stage.addChild(this.finalCont);
     this.app.stage.addChild(this.winText);
     this.app.stage.addChild(this.restartBtn);
@@ -78,10 +81,8 @@ export default class FinalScreen {
   }
 
   resize() {
-    this.winOverlay.clear();
-    this.winOverlay.beginFill(config.winOverlayColor, 0.7);
-    this.winOverlay.drawRect(0, 0, this.app.screen.width, this.app.screen.height);
-    this.winOverlay.endFill();
+    this.winOverlayCont.width = this.app.screen.width;
+    this.winOverlayCont.height = this.app.screen.height;
 
     this.winText.x = this.app.screen.width / 2;
     this.winText.y = this.app.screen.height / 2 - 100;
