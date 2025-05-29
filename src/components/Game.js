@@ -30,7 +30,7 @@ export default class Game {
     this.ui = new UI(this.app);
     this.tutorial = new Tutorial(this.app, this.hero, this.yard);
     this.startScreen = new StartScreen(this.app);
-    this.finalScreen = new FinalScreen(this.app);
+    this.finalScreen = new FinalScreen(this.app, () => this.restartGame());
     this.effectsManager = new EffectsManager(this.app);
     this.animalSpawner = new AnimalSpawner(this.app, this.hero.hero, this.yard, (x, y) => this.createAnimal(x, y));
 
@@ -42,7 +42,6 @@ export default class Game {
 
   addListeners() {
     window.addEventListener("resize", () => this.onResize());
-    this.finalScreen.restartBtn.on("pointerdown", () => this.restartGame());
   }
 
   onResize() {

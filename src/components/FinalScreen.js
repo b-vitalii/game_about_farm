@@ -1,10 +1,12 @@
 import { finalScoreTimerTextConfig, restartBtnTextConfig, winTextConfig } from "./styles/Styles.js";
 import config from "./config/config.js";
 import textConfig from "./config/textConfig.js";
+import RestartButton from "./RestartButton.js";
 
 export default class FinalScreen {
-  constructor(app) {
+  constructor(app, onRestart) {
     this.app = app;
+    this.onRestart = onRestart;
 
     this.createChildren();
   }
@@ -29,13 +31,7 @@ export default class FinalScreen {
     this.finalCont = new PIXI.Container();
     this.finalCont.visible = false;
 
-    this.restartBtn = new PIXI.Text(textConfig.restartBtnTextConfig, restartBtnTextConfig);
-    this.restartBtn.anchor.set(0.5);
-    this.restartBtn.x = this.app.screen.width / 2;
-    this.restartBtn.y = this.app.screen.height / 2 + 150;
-    this.restartBtn.interactive = true;
-    this.restartBtn.buttonMode = true;
-    this.restartBtn.visible = false;
+    this.restartBtn = new RestartButton(this.onRestart, this.app);
 
     this.winOverlayCont.addChild(this.winOverlay);
     this.app.stage.addChild(this.finalCont);
@@ -92,5 +88,8 @@ export default class FinalScreen {
 
     this.finalCont.x = this.app.screen.width / 2;
     this.finalCont.y = this.app.screen.height / 2 - 40;
+
+    this.restartBtn.resize();
+
   }
 }
